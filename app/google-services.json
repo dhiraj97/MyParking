@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "83753559926",
+    "project_id": "parkmania-c6c96",
+    "storage_bucket": "parkmania-c6c96.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:83753559926:android:016f1c16d8d76f9ac4bc57",
+        "android_client_info": {
+          "package_name": "com.example.parkmania"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "83753559926-8557ol2h5ghn94rmul24bke5b3k1fec2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDY_ci0Ky3MRuWP84YJBv9_t5mOJ9K1VgQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "83753559926-8557ol2h5ghn94rmul24bke5b3k1fec2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
