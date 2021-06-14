@@ -38,6 +38,7 @@ public class SignUpActivity extends AppCompatActivity {
     private final String TAG = this.getClass().getCanonicalName();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
 
@@ -81,7 +82,14 @@ public class SignUpActivity extends AppCompatActivity {
             edtPlateNumber.setError("Plate Number Cannot be empty!!");
             return;
         }
-
+        if(pass.length() < 6) {
+            edtPassword.setError("Password must be >=6 charachters");
+            return;
+        }
+        if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            edtEmail.setError("Invalid Email!!");
+            return;
+        }
 
         //Checking if email is not blank and regex for email
         if(!email.isEmpty() && Patterns.EMAIL_ADDRESS.matcher(email).matches()){
@@ -91,23 +99,17 @@ public class SignUpActivity extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if(task.isSuccessful()) {
-
                                     //Create an object of User and adding to userView Model
                                     saveDataToDB();
                                     Toast.makeText(SignUpActivity.this,"User Created Successfully", Toast.LENGTH_SHORT).show();
                                     startActivity(new Intent(SignUpActivity.this, SignInActivity.class));
-                                    finish();
+
                                 } else {
                                     Toast.makeText(SignUpActivity.this,"Sign Up Failed!!", Toast.LENGTH_SHORT).show();
                                 }
 
                             }
-                        }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(SignUpActivity.this, "Cannot Create User!!",Toast.LENGTH_SHORT).show();
-                    }
-                });
+                        });
             } else {
                 edtPassword.setError("Cannot Leave Password Empty!");
             }
@@ -150,12 +152,4 @@ public class SignUpActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        if(currentUser != null) {
-
-        }
-    }
 }

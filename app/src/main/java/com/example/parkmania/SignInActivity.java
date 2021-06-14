@@ -4,16 +4,22 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.Checkable;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
+import com.google.api.LogDescriptor;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -22,6 +28,7 @@ public class SignInActivity extends AppCompatActivity {
 
     private EditText edtEmail;
     private EditText edtPassword;
+    private CheckBox rememberMe;
     private Button btnSignUp, btnSignIn;
 
     FirebaseAuth mAuth;
@@ -31,8 +38,19 @@ public class SignInActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signin);
 
+
+
         initialize();
 
+       /* SharedPreferences preferences = getSharedPreferences("checkbox",MODE_PRIVATE);
+        String cb = preferences.getString("remember","");
+
+        if(cb.equals("true")) {
+            transitionToHome();
+        } else if(cb.equals("false")) {
+            Toast.makeText(SignInActivity.this,  "Please Sign In!", Toast.LENGTH_SHORT).show();
+        }
+*/
         btnSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -47,6 +65,30 @@ public class SignInActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
+
+      /*  rememberMe.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                if(buttonView.isChecked()) {
+
+                    SharedPreferences preferences = getSharedPreferences("checkbox", MODE_PRIVATE);
+                    SharedPreferences.Editor editor = preferences.edit();
+                    editor.putString("remember", "true");
+                    editor.apply();
+                    Toast.makeText(SignInActivity.this, "Checked", Toast.LENGTH_SHORT).show();
+
+                } else if(!buttonView.isChecked()){
+                    SharedPreferences preferences = getSharedPreferences("checkbox", MODE_PRIVATE);
+                    SharedPreferences.Editor editor = preferences.edit();
+                    editor.putString("remember", "false");
+                    editor.apply();
+                    Toast.makeText(SignInActivity.this, "UnChecked", Toast.LENGTH_SHORT).show();
+
+
+                }
+            }
+        });*/
     }
 
     private void initialize() {
@@ -54,6 +96,7 @@ public class SignInActivity extends AppCompatActivity {
         btnSignIn = findViewById(R.id.btnLogin);
         edtEmail = findViewById(R.id.edtEmail);
         edtPassword = findViewById(R.id.edtPassword);
+        rememberMe = findViewById(R.id.btnRememberMe);
         mAuth = FirebaseAuth.getInstance();
     }
 
@@ -86,18 +129,19 @@ public class SignInActivity extends AppCompatActivity {
     }
 
     private void transitionToHome() {
-        startActivity(new Intent(this, HomeActivity.class));
+        startActivity(new Intent(SignInActivity.this, HomeActivity.class));
 
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-
         FirebaseUser currentUser = mAuth.getCurrentUser();
+
 
         if(currentUser != null) {
             transitionToHome();
+        } else {
         }
     }
 }

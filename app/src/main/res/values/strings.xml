@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">ParkMania</string>
+    <string name="user_profile">Profile</string>
+    <string name="add_parking">Add Parking</string>
+    <string name="view_parking">View Parking</string>
+    <string name="update_parking">Update Parking</string>
+    <string name="navigation_drawer_open">Open Navigation Drawer</string>
+    <string name="navigation_drawer_close">Close Navigation Drawer</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
