@@ -101,13 +101,13 @@
                     android:textSize="22sp" />
 
                 <Button
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
                     android:id="@+id/btnCurrentLocation"
-                    android:textSize="12sp"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:background="#9999FF"
                     android:text="Use Current Location"
-                    android:layout_height="wrap_content"/>
+                    android:textSize="12sp" />
 
             </LinearLayout>
 
@@ -161,7 +161,7 @@
                     android:layout_weight="1"
                     android:id="@+id/btnGetLocation"
                     android:textSize="12sp"
-                    android:background="#1B5E20"
+                    android:background="#9999ff"
                     android:text="Get Location"
                     android:layout_height="wrap_content"/>
 
