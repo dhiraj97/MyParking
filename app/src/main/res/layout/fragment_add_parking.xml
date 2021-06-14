@@ -1,14 +1,184 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".AddParkingFragment">
-
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
 
-</FrameLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_margin="15dp"
+            android:gravity="center_vertical"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:text="New Parking"
+                android:textColor="#FFF"
+                android:gravity="center"
+                android:textSize="30sp"
+                android:textStyle="bold"
+                android:layout_height="wrap_content"/>
+
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_margin="20dp"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:layout_width="match_parent"
+                android:id="@+id/edtBuildingCode"
+                android:inputType="text"
+                android:maxLength="5"
+                android:hint="Enter your building Code"
+                android:textSize="18sp"
+                android:layout_height="wrap_content"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_marginTop="20dp"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:text="Number Of Hrs :"
+                    android:textColor="#FFF"
+                    android:textSize="18sp"
+                    android:layout_height="wrap_content"/>
+                <Spinner
+                    android:layout_width="match_parent"
+                    android:id="@+id/edtNumberOfHours"
+                    android:prompt="@string/numberOfHours"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+
+
+            <EditText
+                android:layout_width="match_parent"
+                android:id="@+id/edtLicenseNumber"
+                android:layout_marginTop="20dp"
+                android:inputType="text"
+                android:maxLength="8"
+                android:hint="Car License Plate Number"
+                android:textSize="18sp"
+                android:layout_height="wrap_content"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:id="@+id/edtSuitNumber"
+                android:layout_marginTop="20dp"
+                android:hint="Suit no. of host"
+                android:inputType="text"
+                android:maxLength="5"
+                android:textSize="18sp"
+                android:layout_height="wrap_content"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:weightSum="2"
+                android:gravity="center_vertical"
+                android:layout_marginTop="20dp"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/txtAddress"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Address"
+                    android:textColor="#FFF"
+                    android:textSize="22sp" />
+
+                <Button
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:id="@+id/btnCurrentLocation"
+                    android:textSize="12sp"
+                    android:background="#9999FF"
+                    android:text="Use Current Location"
+                    android:layout_height="wrap_content"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:weightSum="2"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:id="@+id/edtStreetName"
+                    android:layout_marginTop="20dp"
+                    android:hint="Street Name "
+                    android:inputType="text"
+                    android:textSize="18sp"
+                    android:layout_height="wrap_content"/>
+
+                <EditText
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:id="@+id/edtCityName"
+                    android:layout_marginTop="20dp"
+                    android:hint="City "
+                    android:inputType="text"
+                    android:textSize="18sp"
+                    android:layout_height="wrap_content"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_marginTop="20dp"
+                android:weightSum="2"
+                android:layout_height="wrap_content">
+
+
+                <EditText
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:id="@+id/edtCountryName"
+                    android:hint="Country "
+                    android:inputType="text"
+                    android:textSize="18sp"
+                    android:layout_height="wrap_content"/>
+
+                <Button
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:id="@+id/btnGetLocation"
+                    android:textSize="12sp"
+                    android:background="#1B5E20"
+                    android:text="Get Location"
+                    android:layout_height="wrap_content"/>
+
+            </LinearLayout>
+
+            <Button
+                android:layout_width="match_parent"
+                android:id="@+id/btnAddParking"
+                android:layout_marginTop="40dp"
+                android:textSize="22sp"
+                android:background="#9999FF"
+                android:text="Add Parking"
+                android:layout_height="wrap_content"/>
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>

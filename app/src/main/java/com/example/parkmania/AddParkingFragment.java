@@ -7,6 +7,11 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+
+import com.example.parkmania.models.Parking;
+import com.example.parkmania.viewmodels.ParkingViewModel;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -23,6 +28,17 @@ public class AddParkingFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+
+    EditText etBuildingCode, etLicence, etSuitNumber, etStreetName, etCityName, etCountryName;
+    Button btUseCurrentLocation, btAddParking, btnGetLocation;
+    private int numberOfHours = 1;
+    private String latitude = "";
+    private String longitude = "";
+    private String userId = "TEMP_ID";
+    private final String TAG = this.getClass().getCanonicalName();
+    private Parking newParking;
+    private ParkingViewModel parkingViewModel;
 
     public AddParkingFragment() {
         // Required empty public constructor
@@ -58,7 +74,10 @@ public class AddParkingFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_add_parking, container, false);
+
     }
 }

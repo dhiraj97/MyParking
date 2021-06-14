@@ -1,5 +1,7 @@
 package com.example.parkmania.models;
 
+import java.util.List;
+
 public class Users {
 
     private String id;
@@ -8,6 +10,7 @@ public class Users {
     private String password;
     private String phone;
     private String plateNumber;
+    private List<Parking> parkings;
 
     public Users(String name, String email, String password, String phone, String plateNumber) {
         this.name = name;
@@ -20,6 +23,9 @@ public class Users {
 
     }
 
+    public void addParking(Parking parking) {
+        parkings.add(parking);
+    }
     public String getId() {
         return id;
     }
