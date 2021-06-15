@@ -8,6 +8,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,8 @@ import android.widget.Toast;
 import com.example.parkmania.models.Parking;
 import com.example.parkmania.session_manager.Session;
 import com.example.parkmania.viewmodels.ParkingViewModel;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -31,6 +34,7 @@ public class FirstFragment extends Fragment {
     private List<Parking> parkingList;
     private ParkingViewModel parkingViewModel;
     CustomAdapter itemsAdapter;
+    FirebaseAuth mAuth;
     ListView listView;
     private String userId = "TEMP_ID";
 
@@ -40,10 +44,15 @@ public class FirstFragment extends Fragment {
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_first, container, false);
 
+
+        mAuth = FirebaseAuth.getInstance();
+
         Session session = new Session(getActivity());
         if (session.isIsLogin()) {
             userId = session.getUserId();
         }
+        Log.d("First Fragment", "First Fragment: "+userId);
+
 
         listView = view.findViewById(R.id.parkingList);
         this.parkingViewModel = ParkingViewModel.getInstance(getActivity().getApplication(),userId);
@@ -51,6 +60,7 @@ public class FirstFragment extends Fragment {
             @Override
             public void onChanged(List<Parking> parkings) {
                 if(parkings != null){
+                    getAllParkings(userId);
                     parkingList = parkings;
                     itemsAdapter = new CustomAdapter(getActivity(), parkings);
                     listView.setAdapter(itemsAdapter);
@@ -78,6 +88,7 @@ public class FirstFragment extends Fragment {
         i.putExtra("PARKING",dataItem);
         startActivity(i);
     }
+
 
     public void getAllParkings(String userId) {
         final FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -127,10 +138,21 @@ public class FirstFragment extends Fragment {
                             parkingList.add(parking);
                         }
 
-//                        itemsAdapter = new CustomAdapter(getActivity().getApplicationContext(), parkingList);
-//                        listView.setAdapter(itemsAdapter);
+                        itemsAdapter = new CustomAdapter(getActivity().getApplicationContext(), parkingList);
+                        listView.setAdapter(itemsAdapter);
                     }
                 });
 
     }
+
+    /*@Override
+    public void onStart() {
+        super.onStart();
+        Session session = new Session(getActivity());
+        if (session.isIsLogin()) {
+            userId = session.getUserId();
+        }
+        Log.d("First Fragment", "First Fragment: "+userId);
+
+    }*/
 }
