@@ -1,13 +1,17 @@
 package com.example.parkmania;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -112,6 +116,7 @@ public class AddParkingFragment extends Fragment {
         Session session = new Session(getContext());
         if (session.isIsLogin()) {
             userId = session.getUserId();
+            Log.d("Parking Detaisl", "onCreateView: SESSION DETAILS"+userId);
         }
 
         permissions.add(ACCESS_FINE_LOCATION);
@@ -150,6 +155,14 @@ public class AddParkingFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 getLocationFromAddress();
+            }
+        });
+
+        btAddParking = view.findViewById(R.id.btnAddParking);
+        btAddParking.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addParking();
             }
         });
 
@@ -193,6 +206,124 @@ public class AddParkingFragment extends Fragment {
         // Inflate the layout for this fragment
         return view;
 
+    }
+
+    private void addParking() {
+        if (this.userId.isEmpty()) {
+            return;
+        }
+        if (validateData()) {
+            newParking = getDetails();
+            System.out.println(newParking.toString());
+            saveDataToDB();
+        }
+    }
+
+    private void saveDataToDB() {
+        this.parkingViewModel.addParking(this.newParking);
+        Toast.makeText(getContext(), "Parking Added", Toast.LENGTH_LONG).show();
+        clearData();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        switch (requestCode) {
+            case ALL_PERMISSIONS_RESULT:
+                for (Object perms : permissionsToRequest) {
+                    if (!hasPermission(perms)) {
+                        permissionsRejected.add(perms);
+                    }
+                }
+                if (permissionsRejected.size() > 0) {
+
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        if (shouldShowRequestPermissionRationale((String) permissionsRejected.get(0))) {
+                            showMessageOKCancel("These permissions are mandatory for the application. Please allow access.",
+                                    new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                                                requestPermissions((String[]) permissionsRejected.toArray(new String[permissionsRejected.size()]), ALL_PERMISSIONS_RESULT);
+                                            }
+                                        }
+                                    });
+                            return;
+                        }
+                    }
+
+                }
+
+                break;
+        }
+
+    }
+
+    private void clearData() {
+        etBuildingCode.setText("");
+        etCountryName.setText("");
+        etCityName.setText("");
+        etStreetName.setText("");
+        etSuitNumber.setText("");
+        etLicence.setText("");
+        latitude = "";
+        longitude = "";
+    }
+
+    private Parking getDetails() {
+        Parking parking = new Parking();
+        parking.setUserId(userId);
+        parking.setBuildingCode(etBuildingCode.getText().toString());
+        parking.setCarLicensePlateNumber(etLicence.getText().toString());
+        parking.setSuitNumber(etSuitNumber.getText().toString());
+        parking.setNoOfHrs(numberOfHours);
+        parking.setLatitude(latitude);
+        parking.setLongitude(longitude);
+        parking.setDate(getDate());
+        return parking;
+    }
+
+    private String getDate() {
+        Date c = Calendar.getInstance().getTime();
+        System.out.println("Current time => " + c);
+        SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy h:mm a", Locale.getDefault());
+        return df.format(c);
+    }
+
+    private boolean validateData() {
+        boolean isValidData = true;
+        if (this.etBuildingCode.getText().toString().isEmpty()) {
+            this.etBuildingCode.setError("Please enter Building Code");
+            isValidData = false;
+        }
+        if (this.etLicence.getText().toString().isEmpty()) {
+            this.etLicence.setError("Please enter Licence Number");
+            isValidData = false;
+        }
+        if (this.etSuitNumber.getText().toString().isEmpty()) {
+            this.etSuitNumber.setError("Please enter Suit Number");
+            isValidData = false;
+        }
+        if (this.etStreetName.getText().toString().isEmpty()) {
+            this.etStreetName.setError("Please enter Street Name");
+            isValidData = false;
+        }
+        if (this.etCityName.getText().toString().isEmpty()) {
+            this.etCityName.setError("Please enter City Name");
+            isValidData = false;
+        }
+        if (this.etCountryName.getText().toString().isEmpty()) {
+            this.etCountryName.setError("Please enter Country Name");
+            isValidData = false;
+        }
+        if (latitude.isEmpty() || longitude.isEmpty()) {
+            this.etStreetName.setError("Please enter valid Street Name");
+            this.etCityName.setError("Please enter valid City Name");
+            this.etCountryName.setError("Please enter valid Country Name");
+            isValidData = false;
+        }
+        return isValidData;
     }
 
     private void getLocationFromAddress()
@@ -296,5 +427,26 @@ public class AddParkingFragment extends Fragment {
             }
         }
         return true;
+    }
+
+    private void showMessageOKCancel(String message, DialogInterface.OnClickListener okListener) {
+        new AlertDialog.Builder(getActivity())
+                .setMessage(message)
+                .setPositiveButton("OK", okListener)
+                .setNegativeButton("Cancel", null)
+                .create()
+                .show();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if(myLocationTracker != null) {
+            myLocationTracker.stopListener();
+        }
+    }
+
+    public void actionBack(View view) {
+        super.getActivity().onBackPressed();;
     }
 }

@@ -13,15 +13,24 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ParkMania">
-        <activity android:name=".HomeActivity"
-            android:theme="@style/Theme.AppCompat.NoActionBar"
-            ></activity>
+        <activity android:name=".ParkingDetails"></activity>
+        <activity
+            android:name=".HomeActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity android:name=".SignUpActivity" />
         <activity android:name=".SignInActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+        <meta-data
+            android:name="com.google.android.maps.v2.API_KEY"
+            android:value="AIzaSyB586mvbOFYJPnQWOZ3zXSv_u1ZxILEpNQ" />
     </application>
+
 </manifest>

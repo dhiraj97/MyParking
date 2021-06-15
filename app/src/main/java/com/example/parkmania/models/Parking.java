@@ -13,6 +13,7 @@ public class Parking implements Serializable {
     private String latitude;
     private String longitude;
     private String date;
+    private List<Users> userList;
     public Parking() {
     }
 
@@ -26,6 +27,14 @@ public class Parking implements Serializable {
         this.latitude = latitude;
         this.longitude = longitude;
         this.date = date;
+    }
+
+    public List<Users> getUserList() {
+        return userList;
+    }
+
+    public void setUserList(List<Users> userList) {
+        this.userList = userList;
     }
 
     public String getId() {

@@ -1,6 +1,7 @@
 package com.example.parkmania.viewmodels;
 
 import android.app.Application;
+import android.content.Context;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -27,5 +28,5 @@ public class UserViewModel extends AndroidViewModel {
         super(application);
     }
 
-    public void addUser(Users user){ this.userRepository.addUser(user);}
+    public void addUser(Users user, Context context){ this.userRepository.addUser(user,context);}
 }

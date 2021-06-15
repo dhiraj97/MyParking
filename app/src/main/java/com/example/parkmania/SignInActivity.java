@@ -16,6 +16,7 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.parkmania.session_manager.Session;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
@@ -30,7 +31,7 @@ public class SignInActivity extends AppCompatActivity {
     private EditText edtPassword;
     private CheckBox rememberMe;
     private Button btnSignUp, btnSignIn;
-
+    private FirebaseUser currentUser;
     FirebaseAuth mAuth;
 
     @Override
@@ -101,6 +102,8 @@ public class SignInActivity extends AppCompatActivity {
     }
 
     private void loginUser() {
+
+
         String email = edtEmail.getText().toString();
         String pass = edtPassword.getText().toString();
 
@@ -112,6 +115,9 @@ public class SignInActivity extends AppCompatActivity {
                    public void onComplete(@NonNull Task<AuthResult> task) {
                        if(task.isSuccessful()) {
                            transitionToHome();
+                           Session session = new Session(SignInActivity.this);
+                           session.setValues(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                           Log.d("SignInActivity", "onComplete: "+ FirebaseAuth.getInstance().getCurrentUser().getUid());
                            Toast.makeText(SignInActivity.this,"Sign In Successful!", Toast.LENGTH_SHORT).show();
                        } else {
                            Toast.makeText(SignInActivity.this,"Sign In Failed!", Toast.LENGTH_SHORT).show();
@@ -141,7 +147,17 @@ public class SignInActivity extends AppCompatActivity {
 
         if(currentUser != null) {
             transitionToHome();
+            Session session = new Session(SignInActivity.this);
+            session.setValues(FirebaseAuth.getInstance().getCurrentUser().getUid());
+            Log.d("SignInActivity", "onComplete: "+ FirebaseAuth.getInstance().getCurrentUser().getUid());
         } else {
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        mAuth.signOut();
+        finish();
     }
 }

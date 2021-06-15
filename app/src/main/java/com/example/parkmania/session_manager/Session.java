@@ -3,6 +3,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import com.example.parkmania.models.Users;
+
 public class Session {
 
     private SharedPreferences prefs;

@@ -131,7 +131,7 @@ public class SignUpActivity extends AppCompatActivity {
 
         Log.d(TAG, "saveDataToDB newUser: "+newUser.toString());
 
-        userViewModel.addUser(newUser);
+        userViewModel.addUser(newUser, SignUpActivity.this);
     }
 
     private void initialize() {
