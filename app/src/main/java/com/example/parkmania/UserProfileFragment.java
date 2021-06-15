@@ -40,7 +40,7 @@ public class UserProfileFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    private EditText email;
+    private EditText email, password, newEmail;
     private Button btnUpdateEmail;
     private String userId = "Temp_Id";
 
@@ -90,7 +90,10 @@ public class UserProfileFragment extends Fragment {
         email = view.findViewById(R.id.edtEmail);
         email.setText(user.getEmail());
 
-        btnUpdateEmail = view.findViewById(R.id.btnEmailUpdate);
+        newEmail = view.findViewById(R.id.edtNewEmail);
+        password = view.findViewById(R.id.edtPassword);
+
+        btnUpdateEmail = view.findViewById(R.id.btnUpdateEmail);
         btnUpdateEmail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -99,7 +102,7 @@ public class UserProfileFragment extends Fragment {
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                 // Get auth credentials from the user for re-authentication
                 AuthCredential credential = EmailAuthProvider
-                        .getCredential(user.getEmail(), "djrocks"); // Current Login Credentials \\
+                        .getCredential(user.getEmail(), password.getText().toString()); // Current Login Credentials \\
                 // Prompt the user to re-provide their sign-in credentials
                 user.reauthenticate(credential)
                         .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -109,7 +112,7 @@ public class UserProfileFragment extends Fragment {
                                 //Now change your email address \\
                                 //----------------Code for Changing Email Address----------\\
                                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                                user.updateEmail(email.getText().toString())
+                                user.updateEmail(newEmail.getText().toString())
                                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                                             @Override
                                             public void onComplete(@NonNull Task<Void> task) {
