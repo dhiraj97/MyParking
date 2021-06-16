@@ -1,5 +1,6 @@
 package com.example.parkmania;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -12,8 +13,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.parkmania.repository.UserRepository;
 import com.example.parkmania.session_manager.Session;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -22,6 +25,8 @@ import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import static android.content.ContentValues.TAG;
 
@@ -40,9 +45,12 @@ public class UserProfileFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    private EditText email, password, newEmail;
-    private Button btnUpdateEmail;
+    private EditText email, password, newEmail, newPassword;
+    private Button btnUpdateEmail, btnDelete, btnLogout;
     private String userId = "Temp_Id";
+    private TextView txtEmail;
+    private UserRepository userRepository;
+
 
     public UserProfileFragment() {
         // Required empty public constructor
@@ -93,7 +101,15 @@ public class UserProfileFragment extends Fragment {
         newEmail = view.findViewById(R.id.edtNewEmail);
         password = view.findViewById(R.id.edtPassword);
 
-        btnUpdateEmail = view.findViewById(R.id.btnUpdateEmail);
+        newPassword = view.findViewById(R.id.edtNewPassword);
+
+        txtEmail = view.findViewById(R.id.txtEmail);
+
+
+        userRepository = new UserRepository();
+        txtEmail.setText(user.getEmail().toString());
+
+        btnUpdateEmail = view.findViewById(R.id.btnUpdate);
         btnUpdateEmail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -121,9 +137,62 @@ public class UserProfileFragment extends Fragment {
                                                 }
                                             }
                                         });
+                                user.updatePassword(newPassword.getText().toString())
+                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                if(task.isSuccessful()) {
+                                                    Log.d(TAG, "User Password Changed!!");
+                                                }
+                                            }
+                                        });
                                 //----------------------------------------------------------\\
                             }
                         });
+            }
+        });
+
+        btnDelete = view.findViewById(R.id.btnDeleteUser);
+        btnDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+                // Get auth credentials from the user for re-authentication. The example below shows
+                // email and password credentials but there are multiple possible providers,
+                // such as GoogleAuthProvider or FacebookAuthProvider.
+                AuthCredential credential = EmailAuthProvider
+                        .getCredential(user.getEmail(), password.getText().toString());
+
+                // Prompt the user to re-provide their sign-in credentials
+                user.reauthenticate(credential)
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                user.delete()
+                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                if (task.isSuccessful()) {
+                                                    startActivity(new Intent(getActivity(), SignInActivity.class));
+                                                    Log.d(TAG, "User account deleted.");
+                                                }
+                                            }
+                                        });
+                            }
+                        });
+            }
+        });
+
+        btnLogout = view.findViewById(R.id.btnLogOut);
+        btnLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                FirebaseAuth mAuth = FirebaseAuth.getInstance();
+                mAuth.signOut();
+                getActivity().finish();
+                startActivity(new Intent(getActivity(), SignInActivity.class));
             }
         });
         return view;
